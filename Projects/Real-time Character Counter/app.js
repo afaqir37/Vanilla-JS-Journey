@@ -16,12 +16,16 @@ textarea.addEventListener('input', () => {
     totalCharacters = textarea.value.length;
     remainingCharacters = CHAR_LIMIT - totalCharacters
 
+
     total.textContent = totalCharacters
     remaining.textContent = remainingCharacters
 
-    if (totalCharacters == CHAR_LIMIT) {
+
+setTimeout(() => {
+    if (remainingCharacters == 0) {
         alert('You have exceeded the limit!')
-        return
+        //return
     }
+}, 0)
 
 })
