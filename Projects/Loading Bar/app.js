@@ -61,6 +61,7 @@ const drawCircle = (cell) => {
     circle.setAttribute('stroke', 'red')
     circle.setAttribute('stroke-width', '3')
     circle.setAttribute('fill', 'transparent')
+    circle.classList.add('move')
     console.log(circle)
     document.querySelector('svg').appendChild(circle)
     cell.setAttribute('data-state', 'occupied')
@@ -78,6 +79,7 @@ const drawX = (cell) => {
     line1.setAttribute('y2', cy + size)
     line1.setAttribute('stroke', 'blue')
     line1.setAttribute('stroke-width', '4')
+    line1.classList.add('move')
     document.querySelector('svg').appendChild(line1)
 
     const line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -87,7 +89,7 @@ const drawX = (cell) => {
     line2.setAttribute('y2', cy + size)
     line2.setAttribute('stroke', 'blue')
     line2.setAttribute('stroke-width', '4')
-    
+    line2.classList.add('move') 
     document.querySelector('svg').appendChild(line2)
 
     cell.setAttribute('data-state', 'occupied')
@@ -97,24 +99,21 @@ const drawX = (cell) => {
 const checkWinner = () => {
     for (let i = 0; i < 3; i++) {
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][2] != '') {
-            alert(`${board[i][0]} wins!`)
             return true
         }
 
         if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[2][i] != '') {
-            alert(`${board[0][i]} wins!`)
             return true
         }
 
     }
 
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[2][2] != '') {
-        alert(`${board[0][0]} wins!`)
         return true
     }
 
     if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[2][0] != '') {
-        alert(`${board[0][0]} wins!`)
+        console.log(board[0][0])
         return true
 
     }
@@ -149,10 +148,19 @@ function handleMove(event) {
             currentPlayer = 'X'
         }
 
-        setTimeout(() => {
-            if (checkWinner())
+        if (checkWinner()) {
+            setTimeout(() => {
+                currentPlayer == 'X' ? alert('Player O wins!') : alert('Player X wins!')
                 isGameOver = true
-        }, 100)
+            }, 50)
+           
+        } else if (isGameTie()) {
+            setTimeout(() => {
+                alert('it\'s a tie!')
+                isGameOver = true
+            }, 50)
+        }
+            
 
     } else {
         console.log('This cell is already occupied')
@@ -160,8 +168,35 @@ function handleMove(event) {
 }
 
 
+function cleanBoard() {
+    const moves = document.getElementsByClassName('move')
+    const cells = document.querySelectorAll('[data-state]')
+    
+
+    Array.from(moves).forEach((move) => {
+        move.remove()
+    })
+
+    cells.forEach((cell) => {
+        cell.setAttribute('data-state', 'empty')
+    })
+
+    board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ]
+
+    currentPlayer = 'X'
+    isGameOver = false
+}
 
 
+function isGameTie() {
+    const cells = document.querySelectorAll('[data-state]')
 
+    return Array.from(cells).every((cell) => cell.getAttribute('data-state') === 'occupied')
+    
+}
 
 
