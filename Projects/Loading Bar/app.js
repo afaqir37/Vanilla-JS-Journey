@@ -34,6 +34,17 @@ function updateProgress() {
 
 // TIC-TAC-TOE Section
 
+let board = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
+]
+
+
+
+let currentPlayer = 'X'
+let isGameOver = false
+
 document.querySelectorAll('rect').forEach((cell) => {
     cell.addEventListener('click', handleMove);
 })
@@ -83,18 +94,74 @@ const drawX = (cell) => {
     
 }
 
+const checkWinner = () => {
+    for (let i = 0; i < 3; i++) {
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][2] != '') {
+            alert(`${board[i][0]} wins!`)
+            return true
+        }
+
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[2][i] != '') {
+            alert(`${board[0][i]} wins!`)
+            return true
+        }
+
+    }
+
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[2][2] != '') {
+        alert(`${board[0][0]} wins!`)
+        return true
+    }
+
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[2][0] != '') {
+        alert(`${board[0][0]} wins!`)
+        return true
+
+    }
+
+    return false
+}
 
 function handleMove(event) {
+    if (isGameOver)
+        return
+
     console.log('entered')
     const rect = event.target
+    const x = parseInt(rect.getAttribute('x')) / rect.getAttribute('width')
+    const y = parseInt(rect.getAttribute('y')) / rect.getAttribute('width')
     
     if (rect.getAttribute('data-state') === 'empty') {
         console.log('ok')
-        drawX(rect)
+        if (currentPlayer === 'X') {
+
+            drawX(rect)
+            board[y][x] = 'X'
+            
+           currentPlayer = 'O'
+        }
+
+        else if (currentPlayer === 'O') {
+
+            drawCircle(rect)
+            board[y][x] = 'O'
+
+            currentPlayer = 'X'
+        }
+
+        setTimeout(() => {
+            if (checkWinner())
+                isGameOver = true
+        }, 100)
 
     } else {
         console.log('This cell is already occupied')
     }
 }
+
+
+
+
+
 
 
