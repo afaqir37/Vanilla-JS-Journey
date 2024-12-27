@@ -17,6 +17,7 @@ body {
 
 
 .loading_bar {
+    display: none;
     width: 500px;
 }
 
@@ -46,5 +47,12 @@ h2 {
     height:100%;
     background-color: #355F2E ;
     border-radius: 10px;
-    transition: width 0.3s;
+    transition: width 0.2s;
+}
+
+.tic-tac-toe {
+    background-color: pink;
+    width: 500px;
+    height: 500px;
+    margin: auto;
 }
