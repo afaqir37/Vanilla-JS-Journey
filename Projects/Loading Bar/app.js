@@ -126,6 +126,8 @@ function handleMove(event) {
         return
 
     console.log('entered')
+    const gameText = document.getElementById('game-text')
+    console.log(gameText)
     const rect = event.target
     const x = parseInt(rect.getAttribute('x')) / rect.getAttribute('width')
     const y = parseInt(rect.getAttribute('y')) / rect.getAttribute('width')
@@ -138,6 +140,7 @@ function handleMove(event) {
             board[y][x] = 'X'
             
            currentPlayer = 'O'
+           gameText.textContent = 'Player O\'s Turn'
         }
 
         else if (currentPlayer === 'O') {
@@ -146,6 +149,7 @@ function handleMove(event) {
             board[y][x] = 'O'
 
             currentPlayer = 'X'
+            gameText.textContent = 'Player X\'s Turn'
         }
 
         if (checkWinner()) {
@@ -171,6 +175,7 @@ function handleMove(event) {
 function cleanBoard() {
     const moves = document.getElementsByClassName('move')
     const cells = document.querySelectorAll('[data-state]')
+    const gameText = document.getElementById('game-text')
     
 
     Array.from(moves).forEach((move) => {
@@ -189,6 +194,7 @@ function cleanBoard() {
 
     currentPlayer = 'X'
     isGameOver = false
+    gameText.textContent = 'Player X\'s Turn'
 }
 
 
