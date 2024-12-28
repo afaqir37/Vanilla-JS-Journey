@@ -1,7 +1,12 @@
 const progress = document.getElementsByClassName('progress')
 const percentage = document.getElementById('percentage')
+const loading_bar = document.getElementsByClassName('loading_bar')[0]
+const gameContainer = document.getElementsByClassName('tic-tac-toe')[0]
+const grid = document.getElementsByClassName('grid')[0]
 
-//let interval = setInterval(updateProgress, 50);
+
+
+let interval = setInterval(updateProgress, 50);
 let width = 0
 
 
@@ -9,6 +14,7 @@ function updateProgress() {
 
     if (width == 100) {
         clearInterval(interval)
+        setTimeout(showGame, 500)
     }
 
     if (width != 100 && width >= 90) {
@@ -31,6 +37,17 @@ function updateProgress() {
     width++
 }
 
+function showGame() {
+    loading_bar.classList.add('fade-out')
+    setTimeout(() => {
+        gameContainer.classList.add('fade-in')
+    }, 500)
+
+    setTimeout(() => {
+        grid.classList.add('show')
+    }, 500)
+
+}
 
 // TIC-TAC-TOE Section
 
@@ -154,13 +171,13 @@ function handleMove(event) {
 
         if (checkWinner()) {
             setTimeout(() => {
-                currentPlayer == 'X' ? alert('Player O wins!') : alert('Player X wins!')
+                gameText.textContent = currentPlayer == 'X' ? 'Player O wins!' : 'Player X wins!' 
                 isGameOver = true
             }, 50)
            
         } else if (isGameTie()) {
             setTimeout(() => {
-                alert('it\'s a tie!')
+                gameText.textContent = 'It\'s a tie!'
                 isGameOver = true
             }, 50)
         }
