@@ -2,9 +2,12 @@
 {
   "name": "Node.js",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18-bullseye",
+  "image": "node:lts-slim",
   "features": {
-    "ghcr.io/devcontainers-contrib/features/jshint:2": {}
+    "ghcr.io/devcontainers-contrib/features/jshint:2": {},
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/guiyomh/features/vim:0": {}
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
