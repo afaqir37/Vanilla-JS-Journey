@@ -12,7 +12,7 @@ const port = 3000
 app.use(express.static(path.join(__dirname, '..', 'client')))
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+    res.sendFile(path.join(__dirname ,'index.html'))
 })
 
 const waitingPlayers = new Set()
@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
 
         if (waitingPlayers.size > 0) {
             // Get the first waiting player
+            console.log('matched...')
             const opponent = waitingPlayers.values().next().value
             waitingPlayers.delete(opponent)
 

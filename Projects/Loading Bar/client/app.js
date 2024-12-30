@@ -153,7 +153,6 @@ function handleMove(event) {
     const y = parseInt(rect.getAttribute('y')) / rect.getAttribute('width')
     
     if (rect.getAttribute('data-state') === 'empty') {
-        console.log('ok')
         if (currentPlayer === 'X') {
 
             drawX(rect)
