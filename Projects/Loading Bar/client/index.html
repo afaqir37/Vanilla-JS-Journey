@@ -32,7 +32,8 @@
 
         <div class="tic-tac-toe">
 
-             <button class="find-match">Find Match!</button>
+             <button id="find-match">Find Match!</button>
+             <div id="status" class="status-message"></div>
 
             <div class="btn">
                 <button class="restart" onclick="cleanBoard()">Restart!</button>
@@ -69,7 +70,9 @@
        
 
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="socket-client.js"></script>
         <script src="app.js"></script>
+        
     </body>
 </html>

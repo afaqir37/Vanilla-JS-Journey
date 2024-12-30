@@ -90,7 +90,7 @@ h2 {
   pointer-events: auto;
 }
 
-.find-match {
+#find-match {
   position: absolute;  /* Position it relative to the page */
   top: 200px; /* 20px from the top of the page */
   right: 200px; /* 20px from the right of the page */
@@ -103,14 +103,47 @@ h2 {
   cursor: pointer;
 }
 
-.find-match:hover {
+#find-match:hover {
   background-color: #45a049;
 }
 
-.find-match:active {
+#find-match:active {
     background-color: #388e3c; /* Darker green when clicked */
     transform: scale(0.95); /* Slightly shrink the button to show it is pressed */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow when pressed */
+}
+
+#status {
+  position: absolute;
+  top: 250px;  /* Moved closer to the Find Match button */
+  right: 200px;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: #4CAF50;  /* Matching your button's green color */
+  font-weight: bold;
+  min-width: 200px;  /* Ensure consistent width */
+  text-align: center;
+  border-radius: 5px;
+  /*background-color: rgba(76, 175, 80, 0.1);  /* Light green background */
+  transition: all 0.3s ease;  /* Smooth transitions for any changes */
+}
+
+/* Style for when waiting/searching */
+#status.searching {
+  color: #f39c12;  /* Orange for waiting state */
+  background-color: rgba(243, 156, 18, 0.1);
+}
+
+/* Style for when match is found */
+#status.matched {
+  color: #2ecc71;  /* Brighter green for success */
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+/* Style for when error/disconnected */
+#status.error {
+  color: #e74c3c;  /* Red for error states */
+  background-color: rgba(231, 76, 60, 0.1);
 }
 
 .grid {
