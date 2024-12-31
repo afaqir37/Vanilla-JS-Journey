@@ -3,15 +3,17 @@ let isSearching = false
 let currentRoom = null
 let playerSymbol = null
 let isYourTurn = false
+const gameText = document.getElementById('game-text')
 
 document.querySelectorAll('rect').forEach((cell) => {
     cell.addEventListener('click', (e) => {
         if (isYourTurn) {
             const position = e.target.getAttribute('data-cell')
+
             socket.emit('makeMove', {
                 roomId: currentRoom,
                 position: position
-        })
+            })
         }
     }
 )
@@ -26,6 +28,10 @@ socket.on('matchFound', ({ roomId, players, currentPlayer }) => {
     currentRoom = roomId
     playerSymbol = players[0] === socket.id ? 'X' : 'O'
     isYourTurn = currentPlayer === socket.id
+    if (isYourTurn)
+        gameText.textContent = 'Your turn!'
+    else
+        gameText.textContent = 'Your opponent\'s turn!'
     updateStatus(`Match found! You are ${playerSymbol}`, 'matched')
     enableBoard(isYourTurn)
 })
@@ -36,7 +42,26 @@ socket.on('moveMade', ({ position, nextPlayer }) => {
     const cell = document.querySelector(`[data-cell="${position}"]`)
     symbol === 'X' ? drawX(cell) : drawCircle(cell)
     isYourTurn = socket.id === nextPlayer
+    if (isYourTurn)
+        gameText.textContent = 'Your turn!'
+    else
+        gameText.textContent = 'Your opponent\'s turn!'
     enableBoard(isYourTurn)
+})
+
+socket.on('gameOver', ({ type, winner} ) => {
+    const isWinner = winner === socket.id
+    
+    if (type === 'win') {
+        if (isWinner) {
+            congrats()
+            updateStatus('You won! 🎉', 'matched')
+        } else {
+            updateStatus('You lost!', 'error')
+        }
+    }
+
+    document.querySelector('.grid').style.pointerEvents = 'none'
 })
 
 

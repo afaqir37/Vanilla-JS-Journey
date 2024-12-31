@@ -18,6 +18,12 @@ app.get('/', (req, res) => {
 const waitingPlayers = new Set()
 const rooms = new Map()
 
+const winPatterns = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], //rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], //columns
+    [0, 4, 8], [2, 4, 6] //diagonals
+]
+
 io.on('connection', (socket) => {
 
     console.log('A user connected')
@@ -82,6 +88,24 @@ io.on('connection', (socket) => {
             nextPlayer: room.currentPlayer
         }))
 
+        // Check for Win or Tie
+        const symbol = room.players[0] === socket.id ? 'X' : 'O'
+        room.board[position - 1] = symbol
+
+        const isWin = checkWin(room.board, symbol)
+        const isTie = !room.board.includes(null)
+
+        if (isWin || isTie) {
+            io.to(roomId).emit('gameOver', ({
+                type: isWin ? 'win' : 'tie',
+                winner: isWin ? socket.id : null
+            }))
+            console.log('itadakimas')
+            return
+        }
+
+
+
     })
 
 
@@ -116,4 +140,11 @@ server.listen(port, () => {
 
 function generateRoomId() {
     return `room_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
+}
+
+function checkWin(board, symbol) {
+    console.log(board)
+    return winPatterns.some(pattern => {
+        return pattern.every(index => board[index] === symbol)
+    })
 }
