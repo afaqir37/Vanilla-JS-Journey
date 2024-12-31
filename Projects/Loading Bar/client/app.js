@@ -62,9 +62,9 @@ let board = [
 let currentPlayer = 'X'
 let isGameOver = false
 
-document.querySelectorAll('rect').forEach((cell) => {
-    cell.addEventListener('click', handleMove);
-})
+// document.querySelectorAll('rect').forEach((cell) => {
+//     cell.addEventListener('click', handleMove);
+// })
 
 
 const drawCircle = (cell) => {
@@ -145,9 +145,8 @@ function handleMove(event) {
     if (isGameOver)
         return
 
-    console.log('entered')
+    
     const gameText = document.getElementById('game-text')
-    console.log(gameText)
     const rect = event.target
     const x = parseInt(rect.getAttribute('x')) / rect.getAttribute('width')
     const y = parseInt(rect.getAttribute('y')) / rect.getAttribute('width')

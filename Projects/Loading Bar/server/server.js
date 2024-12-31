@@ -68,6 +68,23 @@ io.on('connection', (socket) => {
 
     })
 
+
+
+    socket.on('makeMove', ({ roomId, position }) => {
+        const room = rooms.get(roomId)
+        if (!room || room.currentPlayer !== socket.id)
+            return
+
+        room.currentPlayer = room.players.find(id => id != socket.id)
+
+        io.to(roomId).emit('moveMade', ({
+            position,
+            nextPlayer: room.currentPlayer
+        }))
+
+    })
+
+
     socket.on('cancelMatch', () => {
         waitingPlayers.delete(socket.id)
         socket.emit('matchCanceled')

@@ -2,6 +2,21 @@ const socket = io()
 let isSearching = false
 let currentRoom = null
 let playerSymbol = null
+let isYourTurn = false
+
+document.querySelectorAll('rect').forEach((cell) => {
+    cell.addEventListener('click', (e) => {
+        if (isYourTurn) {
+            const position = e.target.getAttribute('data-cell')
+            socket.emit('makeMove', {
+                roomId: currentRoom,
+                position: position
+        })
+        }
+    }
+)
+})
+
 
 socket.on('connect', () => {
     console.log('connected to server')
@@ -10,10 +25,19 @@ socket.on('connect', () => {
 socket.on('matchFound', ({ roomId, players, currentPlayer }) => {
     currentRoom = roomId
     playerSymbol = players[0] === socket.id ? 'X' : 'O'
+    isYourTurn = currentPlayer === socket.id
     updateStatus(`Match found! You are ${playerSymbol}`, 'matched')
-    enableBoard(currentPlayer === socket.id)
+    enableBoard(isYourTurn)
 })
 
+
+socket.on('moveMade', ({ position, nextPlayer }) => {
+    const symbol = nextPlayer !== socket.id ? playerSymbol : playerSymbol === 'X' ? 'O' : 'X'
+    const cell = document.querySelector(`[data-cell="${position}"]`)
+    symbol === 'X' ? drawX(cell) : drawCircle(cell)
+    isYourTurn = socket.id === nextPlayer
+    enableBoard(isYourTurn)
+})
 
 
 const findMatchBtn = document.getElementById('find-match')
