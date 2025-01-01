@@ -7,8 +7,10 @@ const gameText = document.getElementById('game-text')
 
 document.querySelectorAll('rect').forEach((cell) => {
     cell.addEventListener('click', (e) => {
-        if (isYourTurn) {
-            const position = e.target.getAttribute('data-cell')
+        const rect = e.target
+
+        if (isYourTurn && rect.getAttribute("data-state") === 'empty') {
+            const position = rect.getAttribute('data-cell')
 
             socket.emit('makeMove', {
                 roomId: currentRoom,
@@ -25,6 +27,11 @@ socket.on('connect', () => {
 })
 
 socket.on('matchFound', ({ roomId, players, currentPlayer }) => {
+
+    cleanBoard()
+    setFindMatchButton('resign', roomId)
+
+
     currentRoom = roomId
     playerSymbol = players[0] === socket.id ? 'X' : 'O'
     isYourTurn = currentPlayer === socket.id
@@ -41,6 +48,9 @@ socket.on('moveMade', ({ position, nextPlayer }) => {
     const symbol = nextPlayer !== socket.id ? playerSymbol : playerSymbol === 'X' ? 'O' : 'X'
     const cell = document.querySelector(`[data-cell="${position}"]`)
     symbol === 'X' ? drawX(cell) : drawCircle(cell)
+
+    cell.setAttribute("data-state", "occupied")
+
     isYourTurn = socket.id === nextPlayer
     if (isYourTurn)
         gameText.textContent = 'Your turn!'
@@ -61,24 +71,11 @@ socket.on('gameOver', ({ type, winner} ) => {
         }
     }
 
+    gameText.textContent = ''
     document.querySelector('.grid').style.pointerEvents = 'none'
+    setFindMatchButton('default')
 })
 
-
-const findMatchBtn = document.getElementById('find-match')
-findMatchBtn.addEventListener('click', () => {
-    if (!isSearching) {
-        socket.emit('findMatch')
-        findMatchBtn.textContent = 'Cancel Search'
-        isSearching = true
-        updateStatus('Searching for opponent...', 'searching')
-    } else {
-        socket.emit('cancelMatch')
-        findMatchBtn.textContent = 'Find Match'
-        isSearching = false
-        updateStatus('Search canceled', 'error')
-    }
-})
 
 
 function updateStatus(msg, type = 'default') {

@@ -100,13 +100,27 @@ io.on('connection', (socket) => {
                 type: isWin ? 'win' : 'tie',
                 winner: isWin ? socket.id : null
             }))
-            console.log('itadakimas')
+            
             return
         }
 
 
 
     })
+
+   socket.on('playerResigned', ({ roomId }) => {
+        const room = rooms.get(roomId)
+        if (room) {
+            io.to(roomId).emit('gameOver', ({
+                type: 'win',
+                winner: room.players.find(id => id !== socket.id)
+            }))
+        }
+
+        rooms.delete(roomId)
+   }) 
+
+    
 
 
     socket.on('cancelMatch', () => {
@@ -143,7 +157,7 @@ function generateRoomId() {
 }
 
 function checkWin(board, symbol) {
-    console.log(board)
+    
     return winPatterns.some(pattern => {
         return pattern.every(index => board[index] === symbol)
     })

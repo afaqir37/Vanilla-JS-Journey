@@ -185,7 +185,7 @@ h2 {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
   animation: drawVerticalLine 1s ease forwards;
-  /*animation-delay: 8s;*/
+  animation-delay: 8s;
 }
 
 .grid svg line:nth-child(3),
@@ -193,7 +193,7 @@ h2 {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
   animation: drawHorizontalLine 1s ease forwards;
-  /*animation-delay: 8s;*/
+  animation-delay: 8s;
 }
 
 @keyframes drawVerticalLine {
