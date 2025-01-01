@@ -32,8 +32,16 @@
 
         <div class="tic-tac-toe">
 
-             <button id="find-match">Find Match!</button>
-             <div id="status" class="status-message"></div>
+           <!-- <div class="game-mode">
+                <button onclick="setMode('offline')" class="mode-btn">Play Offline</button>
+                <button onclick="setMode('online')" class="mode-btn">Play Online</button>
+            </div>
+            -->
+
+            <div id="online-controls" style="display: block">
+                <button id="find-match">Find Match!</button>
+                <div id="status" class="status-message"></div>
+            </div>
 
             <div class="btn">
                 <button class="restart" onclick="cleanBoard()">Restart!</button>
@@ -71,9 +79,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="socket-client.js"></script>
         <script src="app.js"></script>
-        <script src="buttonState.js"></script>
+        <script src="socket-client.js"></script>
+        <script src="buttonState.js"></script>d
         
     </body>
 </html>

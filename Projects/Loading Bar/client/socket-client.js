@@ -4,21 +4,33 @@ let currentRoom = null
 let playerSymbol = null
 let isYourTurn = false
 const gameText = document.getElementById('game-text')
+let gameMode = 'online'
+
+function setMode(mode) {
+    gameMode = mode
+    document.getElementById('online-controls').style.display = gameMode === 'online' ? 'block' : 'none'
+    cleanBoard()
+}
 
 document.querySelectorAll('rect').forEach((cell) => {
-    cell.addEventListener('click', (e) => {
-        const rect = e.target
+    if (gameMode === 'online') {
 
-        if (isYourTurn && rect.getAttribute("data-state") === 'empty') {
-            const position = rect.getAttribute('data-cell')
+        cell.addEventListener('click', (e) => {
+            const rect = e.target
 
-            socket.emit('makeMove', {
-                roomId: currentRoom,
-                position: position
-            })
-        }
+            if (isYourTurn && rect.getAttribute("data-state") === 'empty') {
+                const position = rect.getAttribute('data-cell')
+
+                socket.emit('makeMove', {
+                    roomId: currentRoom,
+                    position: position
+                })
+            }
+        })        
+    } else {
+        cell.addEventListener('click', handleMove); 
     }
-)
+
 })
 
 
@@ -29,6 +41,7 @@ socket.on('connect', () => {
 socket.on('matchFound', ({ roomId, players, currentPlayer }) => {
 
     cleanBoard()
+    document.querySelector('.restart').style.display = 'none'
     setFindMatchButton('resign', roomId)
 
 
@@ -73,6 +86,7 @@ socket.on('gameOver', ({ type, winner} ) => {
 
     gameText.textContent = ''
     document.querySelector('.grid').style.pointerEvents = 'none'
+    document.querySelector('.restart').style.display = 'block'
     setFindMatchButton('default')
 })
 
