@@ -42,6 +42,7 @@ socket.on('matchFound', ({ roomId, players, currentPlayer }) => {
 
     cleanBoard()
     document.querySelector('.restart').style.display = 'none'
+    playMatchFoundAudio()
     setFindMatchButton('resign', roomId)
 
 
@@ -125,4 +126,9 @@ function updateStatus(msg, type = 'default') {
 function enableBoard(isYourTurn) {
     document.getElementsByClassName('grid')[0].style.pointerEvents = isYourTurn ? 'auto' : 'none'
     
+}
+
+function playMatchFoundAudio() {
+    const audio = new Audio('./matchFound')
+    audio.play()
 }
